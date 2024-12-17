@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { getTasksByProject } from '../api/projectApi';
-import TaskItem from './TaskItem'; 
+import TaskItem from './TaskItem';
+import { Spinner, Alert } from 'react-bootstrap';
 
 const TaskListComponent = ({ projectId }) => {
   const [tasks, setTasks] = useState([]);
@@ -11,7 +12,7 @@ const TaskListComponent = ({ projectId }) => {
     const fetchTasks = async () => {
       try {
         setLoading(true);
-        setError(null); // Reset error message jika ada
+        setError(null); // Reset error message if any
         const data = await getTasksByProject(projectId);
         setTasks(data);
       } catch (error) {
@@ -25,6 +26,7 @@ const TaskListComponent = ({ projectId }) => {
     fetchTasks();
   }, [projectId]);
 
+  // Callback to handle task status change
   const handleTaskStatusChange = (taskId, newStatus) => {
     setTasks(prevTasks =>
       prevTasks.map(task =>
@@ -33,31 +35,36 @@ const TaskListComponent = ({ projectId }) => {
     );
   };
 
-  if (loading) {
-    return <div>Loading tasks...</div>;
-  }
-
-  if (error) {
-    return <div className="alert alert-danger">{error}</div>;
-  }
-
   return (
-    <div>
-      <h2>Daftar Tugas untuk Proyek {projectId}</h2>
-      
-      {/* Jika tidak ada tugas */}
-      {tasks.length === 0 ? (
-        <div className="alert alert-info">Tidak ada tugas untuk proyek ini.</div>
-      ) : (
-        <div>
-          {tasks.map((task) => (
-            <TaskItem
-              key={task.id}
-              task={task}
-              onStatusChange={handleTaskStatusChange} // Mengirim callback untuk status change
-            />
-          ))}
+    <div className="task-list-container">
+      <h4 className="text-center mb-4">DAFTAR TUGAS {projectId}</h4>
+
+      {/* Displaying error message */}
+      {error && <Alert variant="danger" className="text-center">{error}</Alert>}
+
+      {/* If loading, show a spinner */}
+      {loading ? (
+        <div className="d-flex justify-content-center align-items-center">
+          <Spinner animation="border" variant="primary" />
+          <p className="ms-3">Memuat Tugas...</p>
         </div>
+      ) : (
+        <>
+          {/* If no tasks available */}
+          {tasks.length === 0 ? (
+            <Alert variant="info" className="text-center">Tidak ada tugas untuk proyek ini.</Alert>
+          ) : (
+            <div className="task-list">
+              {tasks.map((task) => (
+                <TaskItem
+                  key={task.id}
+                  task={task}
+                  onStatusChange={handleTaskStatusChange} // Send callback to handle status change
+                />
+              ))}
+            </div>
+          )}
+        </>
       )}
     </div>
   );

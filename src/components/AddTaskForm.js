@@ -31,7 +31,7 @@ const AddTaskForm = ({ projectId }) => {
 
   return (
     <div className="add-task-form">
-      <h2 className="text-center text-white mb-4">Tambah Tugas Baru</h2>
+      <h4 className="text-center text-white mb-4">ADD NEW TASK</h4>
       <form onSubmit={handleSubmit} className="task-form">
         <div className="mb-3">
           <label htmlFor="task-name" className="form-label">Nama Tugas</label>

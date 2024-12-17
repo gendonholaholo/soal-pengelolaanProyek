@@ -1,21 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { getProjects } from '../api/projectApi';
-import TaskListComponent from './TaskListComponent'; 
-import AddTaskForm from './AddTaskForm';  
-import { Link } from 'react-router-dom'; 
-import { Modal, Button, Spinner } from 'react-bootstrap'; 
+import TaskListComponent from './TaskListComponent';
+import AddTaskForm from './AddTaskForm';
+import { Link } from 'react-router-dom';
+import { Modal, Button, Spinner } from 'react-bootstrap';
+import { FaTasks, FaPlusCircle } from 'react-icons/fa'; // Menggunakan icon untuk estetika
 
 const ProjectListComponent = () => {
   const [projects, setProjects] = useState([]);
   const [selectedProjectId, setSelectedProjectId] = useState(null);
-  const [showModal, setShowModal] = useState(false); 
-  const [loading, setLoading] = useState(false);  
+  const [showModal, setShowModal] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchProjects = async () => {
       try {
         setLoading(true);
-        const data = await getProjects(); 
+        const data = await getProjects();
         setProjects(data);
       } catch (error) {
         console.error('Error fetching projects:', error);
@@ -29,32 +30,34 @@ const ProjectListComponent = () => {
 
   const handleViewTasks = (projectId) => {
     setSelectedProjectId(projectId);
-    setShowModal(true); 
+    setShowModal(true);
   };
 
   const handleCloseModal = () => {
-    setShowModal(false); 
-    setSelectedProjectId(null); 
+    setShowModal(false);
+    setSelectedProjectId(null);
   };
 
   return (
-    <div className="container">
-      <h2 className="text-center mb-4 text-white">Daftar Proyek</h2>
+    <div className="container my-5">
+      <h2 className="text-center mb-5 text-primary">Daftar Proyek</h2>
 
       {/* Card Grid Layout for Projects */}
       <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
         {projects.map((project) => (
           <div key={project.id} className="col">
-            <div className="card h-100 shadow-sm border-light rounded">
-              <div className="card-body">
-                <h5 className="card-title">{project.name}</h5>
-                <p className="card-text">{project.description}</p>
-                <button
-                  className="btn btn-outline-primary"
-                  onClick={() => handleViewTasks(project.id)}
-                >
-                  Lihat Tugas
-                </button>
+            <div className="card h-100 shadow-lg border-light rounded-lg">
+              <div className="card-body d-flex flex-column justify-content-between">
+                <h5 className="card-title text-dark">{project.name}</h5>
+                <p className="card-text text-muted">{project.description}</p>
+                <div className="mt-auto">
+                  <button
+                    className="btn btn-outline-info w-100"
+                    onClick={() => handleViewTasks(project.id)}
+                  >
+                    <FaTasks className="me-2" /> Lihat Tugas
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -62,9 +65,9 @@ const ProjectListComponent = () => {
       </div>
 
       {/* Button to Add New Project */}
-      <div className="text-center mt-4">
-        <Link to="/projects/new" className="btn btn-success">
-          Tambah Proyek Baru
+      <div className="text-center mt-5">
+        <Link to="/projects/new" className="btn btn-success btn-lg">
+          <FaPlusCircle className="me-2" /> Tambah Proyek Baru
         </Link>
       </div>
 
@@ -76,10 +79,10 @@ const ProjectListComponent = () => {
         centered
         dialogClassName="modal-dialog-centered-custom"
       >
-        <Modal.Header closeButton>
-          <Modal.Title>Daftar Tugas Proyek</Modal.Title>
+        <Modal.Header className="d-flex justify-content-center align-items-center">
+          {/* <Modal.Title>Daftar Tugas Proyek</Modal.Title> */}
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body className="d-flex justify-content-center align-items-center">
           {/* Loading Spinner or Task List */}
           {loading ? (
             <div className="text-center">
@@ -90,7 +93,6 @@ const ProjectListComponent = () => {
             <>
               <TaskListComponent projectId={selectedProjectId} />
               <hr />
-              <h4>Tambah Tugas Baru</h4>
               <AddTaskForm projectId={selectedProjectId} />
             </>
           ) : (
