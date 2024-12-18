@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux'; 
 import { addProject } from '../redux/projectSlice'; 
-import { createProject } from '../api/projectApi'; // Import API createProject
+import { createProject } from '../api/projectApi'; 
 
 const AddProjectForm = () => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
-  const dispatch = useDispatch(); // Hook untuk dispatch aksi Redux
+  const dispatch = useDispatch(); 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -14,47 +14,45 @@ const AddProjectForm = () => {
     const projectData = { name, description };
 
     try {
-      // Mengirim proyek baru ke API
       const newProject = await createProject(projectData);
 
-      // Menambahkan proyek baru ke Redux store
       dispatch(addProject(newProject)); 
 
-      alert('Project created successfully!');
+      alert('Proyek berhasil dibuat!');
       setName('');
       setDescription('');
     } catch (error) {
-      console.error('Error creating project:', error);
-      alert('Error creating project!');
+      console.error('Terjadi kesalahan saat membuat proyek:', error);
+      alert('Gagal membuat proyek!');
     }
   };
 
   return (
     <form onSubmit={handleSubmit}>
-      <h2>Add Project</h2>
+      <h2>Tambah Proyek</h2>
 
-      {/* Project Name Input */}
-      <label htmlFor="project-name">Project Name</label>
+      {/* Input untuk Nama Proyek */}
+      <label htmlFor="project-name">Nama Proyek</label>
       <input
         id="project-name"
         name="projectName"
         type="text"
-        placeholder="Project Name"
+        placeholder="Nama Proyek"
         value={name}
         onChange={(e) => setName(e.target.value)}
       />
 
-      {/* Project Description Input */}
-      <label htmlFor="project-description">Project Description</label>
+      {/* Input untuk Deskripsi Proyek */}
+      <label htmlFor="project-description">Deskripsi Proyek</label>
       <textarea
         id="project-description"
         name="projectDescription"
-        placeholder="Project Description"
+        placeholder="Deskripsi Proyek"
         value={description}
         onChange={(e) => setDescription(e.target.value)}
       />
 
-      <button type="submit">Add Project</button>
+      <button type="submit">Tambah Proyek</button>
     </form>
   );
 };

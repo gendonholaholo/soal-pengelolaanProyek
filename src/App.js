@@ -1,9 +1,11 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom'; 
 import ProjectListComponent from './components/ProjectListComponent';
 import AddProjectForm from './components/AddProjectForm';
 import TaskListComponent from './components/TaskListComponent';
 import AddTaskForm from './components/AddTaskForm';
+import LoginComponent from './components/LoginComponent'; 
+import ProtectedRoute from './components/ProtectedRoute'; 
 import './App.css';
 
 function App() {
@@ -18,10 +20,42 @@ function App() {
         {/* Routes */}
         <div className="container my-4">
           <Routes>
-            <Route path="/" element={<ProjectListComponent />} />
-            <Route path="/projects/new" element={<AddProjectForm />} />
-            <Route path="/projects/:projectId/tasks" element={<TaskListComponent />} />
-            <Route path="/projects/:projectId/tasks/new" element={<AddTaskForm />} />
+            {/* Rute Login */}
+            <Route path="/login" element={<LoginComponent />} />
+
+            {/* Rute Protected */}
+            <Route
+              path="/"
+              element={
+                <ProtectedRoute>
+                  <ProjectListComponent />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/projects/new"
+              element={
+                <ProtectedRoute>
+                  <AddProjectForm />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/projects/:projectId/tasks"
+              element={
+                <ProtectedRoute>
+                  <TaskListComponent />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/projects/:projectId/tasks/new"
+              element={
+                <ProtectedRoute>
+                  <AddTaskForm />
+                </ProtectedRoute>
+              }
+            />
           </Routes>
         </div>
       </div>

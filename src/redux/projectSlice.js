@@ -12,7 +12,7 @@ const projectSlice = createSlice({
       state.projects = action.payload;
     },
     addProject: (state, action) => {
-      state.projects.push(action.payload); 
+      state.projects.push(action.payload);
     },
   },
 });
