@@ -1,23 +1,26 @@
-import React, { useEffect, useState } from 'react';
-import { getProjects } from '../api/projectApi';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux'; 
+import { setProjects } from '../redux/projectSlice'; 
+import { getProjects } from '../api/projectApi'; 
 import TaskListComponent from './TaskListComponent';
 import AddTaskForm from './AddTaskForm';
 import { Link } from 'react-router-dom';
 import { Modal, Button, Spinner } from 'react-bootstrap';
-import { FaTasks, FaPlusCircle } from 'react-icons/fa'; // Menggunakan icon untuk estetika
+import { FaTasks, FaPlusCircle } from 'react-icons/fa'; 
 
 const ProjectListComponent = () => {
-  const [projects, setProjects] = useState([]);
-  const [selectedProjectId, setSelectedProjectId] = useState(null);
-  const [showModal, setShowModal] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch(); 
+  const projects = useSelector((state) => state.projects.projects); 
+  const [selectedProjectId, setSelectedProjectId] = React.useState(null);
+  const [showModal, setShowModal] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
 
   useEffect(() => {
     const fetchProjects = async () => {
       try {
         setLoading(true);
         const data = await getProjects();
-        setProjects(data);
+        dispatch(setProjects(data)); // Update Redux state dengan proyek
       } catch (error) {
         console.error('Error fetching projects:', error);
       } finally {
@@ -26,7 +29,7 @@ const ProjectListComponent = () => {
     };
 
     fetchProjects();
-  }, []);
+  }, [dispatch]);
 
   const handleViewTasks = (projectId) => {
     setSelectedProjectId(projectId);
@@ -79,11 +82,8 @@ const ProjectListComponent = () => {
         centered
         dialogClassName="modal-dialog-centered-custom"
       >
-        <Modal.Header className="d-flex justify-content-center align-items-center">
-          {/* <Modal.Title>Daftar Tugas Proyek</Modal.Title> */}
-        </Modal.Header>
+        <Modal.Header className="d-flex justify-content-center align-items-center" />
         <Modal.Body className="d-flex justify-content-center align-items-center">
-          {/* Loading Spinner or Task List */}
           {loading ? (
             <div className="text-center">
               <Spinner animation="border" variant="primary" />

@@ -136,3 +136,14 @@ h2 {
   height: 100%;
   text-align: center;
 }
+
+.container > .row {
+  flex-grow: 1; 
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.text-center.mt-5 {
+  margin-top: auto; 
+}

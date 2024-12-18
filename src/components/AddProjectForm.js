@@ -1,20 +1,25 @@
 import React, { useState } from 'react';
-import { createProject } from '../api/projectApi';
+import { useDispatch } from 'react-redux'; 
+import { addProject } from '../redux/projectSlice'; 
+import { createProject } from '../api/projectApi'; // Import API createProject
 
 const AddProjectForm = () => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
+  const dispatch = useDispatch(); // Hook untuk dispatch aksi Redux
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const projectData = {
-      name,
-      description,
-    };
+    const projectData = { name, description };
 
     try {
-      await createProject(projectData);
+      // Mengirim proyek baru ke API
+      const newProject = await createProject(projectData);
+
+      // Menambahkan proyek baru ke Redux store
+      dispatch(addProject(newProject)); 
+
       alert('Project created successfully!');
       setName('');
       setDescription('');
@@ -31,7 +36,7 @@ const AddProjectForm = () => {
       {/* Project Name Input */}
       <label htmlFor="project-name">Project Name</label>
       <input
-        id="project-name"  
+        id="project-name"
         name="projectName"
         type="text"
         placeholder="Project Name"
@@ -42,8 +47,8 @@ const AddProjectForm = () => {
       {/* Project Description Input */}
       <label htmlFor="project-description">Project Description</label>
       <textarea
-        id="project-description" 
-        name="projectDescription" 
+        id="project-description"
+        name="projectDescription"
         placeholder="Project Description"
         value={description}
         onChange={(e) => setDescription(e.target.value)}
