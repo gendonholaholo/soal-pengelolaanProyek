@@ -46,26 +46,26 @@ const ProjectListComponent = () => {
       <h2 className="text-center mb-5 text-primary">Daftar Proyek</h2>
 
       {/* Card Grid Layout for Projects */}
-      <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-        {projects.map((project) => (
-          <div key={project.id} className="col">
-            <div className="card h-100 shadow-lg border-light rounded-lg">
-              <div className="card-body d-flex flex-column justify-content-between">
-                <h5 className="card-title text-dark">{project.name}</h5>
-                <p className="card-text text-muted">{project.description}</p>
-                <div className="mt-auto">
-                  <button
-                    className="btn btn-outline-info w-100"
-                    onClick={() => handleViewTasks(project.id)}
-                  >
-                    <FaTasks className="me-2" /> Lihat Tugas
-                  </button>
-                </div>
+    <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+      {projects.map((project) => (
+        <div key={project.id} className="col">
+          <div className="card shadow-lg border-light rounded-lg h-100">
+            <div className="card-body d-flex flex-column justify-content-between">
+              <h5 className="card-title text-dark">{project.name}</h5>
+              <p className="card-text text-muted">{project.description}</p>
+              <div className="mt-auto">
+                <button
+                  className="btn btn-outline-info w-100"
+                  onClick={() => handleViewTasks(project.id)}
+                >
+                  <FaTasks className="me-2" /> Lihat Tugas
+                </button>
               </div>
             </div>
           </div>
-        ))}
-      </div>
+        </div>
+      ))}
+    </div>
 
       {/* Button to Add New Project */}
       <div className="text-center mt-5">
